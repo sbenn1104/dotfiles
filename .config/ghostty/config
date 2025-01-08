@@ -1,0 +1,11 @@
+theme = nord
+font-family = MesloLGS Nerd Font Mono
+background-opacity = 0.95
+
+# Split Window
+keybind = cmd+shift+R=new_split:right
+keybind = cmd+shift+D=new_split:down
+
+# Other
+copy-on-select = clipboard
+macos-non-native-fullscreen = visible-menu
