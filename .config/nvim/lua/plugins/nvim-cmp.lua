@@ -23,6 +23,22 @@ return {
     'hrsh7th/cmp-path',
     -- https://github.com/hrsh7th/cmp-cmdline
     'hrsh7th/cmp-cmdline',
+    {
+            url = os.getenv("USER") .. "@git.amazon.com:pkg/AmazonQNVim",
+            build = ":AmazonQAuth",
+            config = function(_, opts)
+              local amazonq = require("AmazonQNVim")
+              amazonq.setup({
+                ssoStartUrl = "https://amzn.awsapps.com/start",
+                lsp_server_cmd = {
+                  "node",
+                  os.getenv("HOME")
+                  .. "/.local/share/nvim/lazy/AmazonQNVim/language-server/build/aws-lsp-codewhisperer-token-binary.js",
+                  "--stdio",
+                },
+              })
+            end,
+        },
   },
   config = function()
     local cmp = require('cmp')
@@ -49,7 +65,7 @@ return {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         },
-	-- Tab through suggestions or when a snippet is active, tab to the next argument
+        -- Tab through suggestions or when a snippet is active, tab to the next argument
         ['<Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
@@ -59,7 +75,7 @@ return {
             fallback()
           end
         end, { 'i', 's' }),
-	-- Tab backwards through suggestions or when a snippet is active, tab to the next argument
+        -- Tab backwards through suggestions or when a snippet is active, tab to the next argument
         ['<S-Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
@@ -71,7 +87,8 @@ return {
         end, { 'i', 's' }),
       },
       sources = cmp.config.sources({
-        { name = "nvim_lsp" }, -- lsp 
+        {name = "amazonq"},
+        { name = "nvim_lsp" }, -- lsp
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
         { name = "path" }, -- file system paths
@@ -84,4 +101,3 @@ return {
     })
   end,
  }
-
